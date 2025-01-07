@@ -10,14 +10,6 @@ import autoprefixer from 'gulp-autoprefixer'
 const bs = browserSync.create()
 const sassCompiler = gulpSass(sass)
 
-// function scripts() {
-//   return src(['node_modules/swiper/swiper-bundle.js', 'app/js/main.js'])
-//     .pipe(concat('main.min.js'))
-//     .pipe(uglify())
-//     .pipe(dest('app/js'))
-//     .pipe(browserSync.stream())
-// }
-
 export function scripts() {
   return src(['node_modules/swiper/swiper-bundle.js', 'app/js/main.js'])
     .pipe(concat('main.min.js'))
@@ -25,15 +17,6 @@ export function scripts() {
     .pipe(dest('app/js'))
     .pipe(bs.stream())
 }
-
-// function styles() {
-//   return src('app/scss/style.scss')
-//     .pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'] }))
-//     .pipe(concat('style.min.css'))
-//     .pipe(sass({ style: 'compressed' }))
-//     .pipe(dest('app/css'))
-//     .pipe(browserSync.stream())
-// }
 
 export function styles() {
   return src('app/scss/style.scss')
@@ -44,25 +27,11 @@ export function styles() {
     .pipe(bs.stream())
 }
 
-// function watching() {
-//   watch(['app/scss/style.scss'], styles)
-//   watch(['app/js/main.js'], scripts)
-//   watch(['app/*.html']).on('change', browserSync.reload)
-// }
-
 export function watching() {
   watch(['app/scss/style.scss'], styles)
   watch(['app/js/main.js'], scripts)
   watch(['app/*.html']).on('change', bs.reload)
 }
-
-// function browsersync() {
-//   browserSync.init({
-//     server: {
-//       baseDir: 'app/',
-//     },
-//   })
-// }
 
 export function browsersync() {
   bs.init({
@@ -72,10 +41,10 @@ export function browsersync() {
   })
 }
 
-// exports.styles = styles
-// exports.scripts = scripts
-// exports.watching = watching
-// exports.browsersync = browsersync
+export function build() {
+  return src(['app/css/style.min.css', 'app/js/main.min.js', 'app/**/*.html'], {
+    base: 'app',
+  }).pipe(dest('dist'))
+}
 
-// exports.default = parallel(styles, scripts, browsersync, watching)
 export default parallel(styles, scripts, browsersync, watching)
