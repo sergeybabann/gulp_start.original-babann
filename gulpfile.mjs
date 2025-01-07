@@ -1,4 +1,4 @@
-import { src, dest, watch, parallel } from 'gulp'
+import { src, dest, watch, parallel, series } from 'gulp'
 
 import sass from 'sass'
 import gulpSass from 'gulp-sass'
@@ -6,6 +6,7 @@ import concat from 'gulp-concat'
 import uglify from 'gulp-uglify-es'
 import browserSync from 'browser-sync'
 import autoprefixer from 'gulp-autoprefixer'
+import clean from 'gulp-clean'
 
 const bs = browserSync.create()
 const sassCompiler = gulpSass(sass)
@@ -41,10 +42,16 @@ export function browsersync() {
   })
 }
 
-export function build() {
+export function building() {
   return src(['app/css/style.min.css', 'app/js/main.min.js', 'app/**/*.html'], {
     base: 'app',
   }).pipe(dest('dist'))
 }
+
+export function cleanDist() {
+  return src('dist').pipe(clean())
+}
+
+export const build = series(cleanDist, building)
 
 export default parallel(styles, scripts, browsersync, watching)
