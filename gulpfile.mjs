@@ -1,6 +1,5 @@
 import { src, dest, watch, parallel, series } from 'gulp'
-
-import sass from 'sass'
+import * as sass from 'sass'
 import gulpSass from 'gulp-sass'
 import concat from 'gulp-concat'
 import uglify from 'gulp-uglify-es'
@@ -12,7 +11,7 @@ const bs = browserSync.create()
 const sassCompiler = gulpSass(sass)
 
 export function scripts() {
-  return src(['node_modules/swiper/swiper-bundle.js', 'app/js/main.js'])
+  return src(['app/js/main.js'])
     .pipe(concat('main.min.js'))
     .pipe(uglify.default())
     .pipe(dest('app/js'))
